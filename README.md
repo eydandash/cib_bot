@@ -177,9 +177,10 @@ chainlit run cibbot.py
 ```
 
 ### Adding New Features
-
-1. **New PDF Sources**: Extend `statement_scraper.py`
-2. **Enhanced Processing**: Modify `parser.py` for new document types
-3. **Custom Models**: Update `embed.py` and `llm.py` for different models
+ In the future, I would like to make this project more accuarate through:
+1. **New PDF Sources**: Extending the work with additional parsing, chunking and embeddings model. Also adding arabic encoding. 
+2. **Enhanced Processing**: Whether before or after vector search, I would like to test additional steps including OCR and semantic chunking using transformers. Unfortunately CPU-based performence was very limited with Docling and OCR.
+3. **Custom Models**: Update `embed.py` and `llm.py` for different models, I am particularly keen on the chaingraph and openAPI integrations.
+4. **Cloud Deployment**: Currently learning GCP and Vertix AI, hoping I would be able to develop or host my inference loads on cloud.
 
 
