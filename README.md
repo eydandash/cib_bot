@@ -19,7 +19,7 @@ An intelligent chatbot for analyzing Commercial International Bank (CIB) Egypt's
 
 ```
 cib_bot/
-├── bot.ipynb                 # Main development notebook
+├── bot.ipynb                 # Testing notebook
 ├── cibbot.py                # Chainlit chat application
 ├── chainlit.md              # Chainlit configuration
 ├── requirements.txt         # Python dependencies
