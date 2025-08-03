@@ -54,7 +54,7 @@ cib_bot/
 
 1. **Clone the repository**
    ```bash
-   git clone <your-repo-url>
+   git clone https://github.com/eydandash/cib_bot.git OR DOWNLOAD THIS DIRECTORY
    cd cib_bot
    ```
 
