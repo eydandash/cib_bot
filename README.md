@@ -2,13 +2,17 @@
 
 An intelligent chatbot for analyzing Commercial International Bank (CIB) Egypt's financial statements using RAG (Retrieval-Augmented Generation) with vector search and Mistral AI.
 
+> **Note**: This project was developed and tested on a limited resource macOS laptop for testing purposes. Make sure to update browser paths in the scraping configuration to match your system setup.
+
+> **Prerequisites**: The program expects the host machine to be running Mistral on Ollama locally before starting the application.
+
 ## 🚀 Features
 
 - **PDF Scraping & Processing**: Automatically scrapes CIB financial statements from their website
 - **Intelligent Text Extraction**: Advanced PDF parsing with OCR support for complex financial documents
 - **Vector Search**: Semantic search using Qdrant vector database with sentence transformers
 - **AI-Powered Chat**: Chainlit-based chat interface with streaming responses from Mistral AI
-- **Bilingual Support**: Handles both English and Arabic financial documents
+- **Bilingual Support**: Handles English financial documents (Arabic document processing planned with specialized embedding models)
 - **Docker Support**: Containerized deployment with Docker Compose
 
 ## 📁 Project Structure
@@ -44,6 +48,8 @@ cib_bot/
 - Ollama with Mistral model
 - Chrome/Brave browser (for scraping)
 
+> **Important**: Before running the scraper, update the browser path in `bot.ipynb` (cell 1) to match your system's browser location. The current path is configured for macOS Brave Browser.
+
 ### Setup
 
 1. **Clone the repository**
@@ -62,6 +68,7 @@ cib_bot/
    ```bash
    pip install -r requirements.txt
    ```
+   > All required libraries are listed in `requirements.txt` and optimized for limited resource environments. When using Docker, dependencies are automatically installed during the first container build.
 
 4. **Start required services**
    ```bash
@@ -94,19 +101,22 @@ chainlit run cibbot.py
 
 The bot will be available at `http://localhost:8000`
 
+![CIB Bot Chat Interface](screenshot.png)
+*The Chainlit-based chat interface showing real-time streaming responses with financial context*
+
 ### 3. Docker Deployment
 
 For production deployment:
 
 ```bash
-docker-compose up -d
+docker-compose up -d --build
 ```
 
 ## 🔧 Configuration
 
 ### Environment Variables
 
-Create a `.env` file for custom configuration:
+Currently maintained inside code, but I will create a `.env` file for custom configuration and loabenv:
 
 ```env
 QDRANT_HOST=localhost
@@ -129,19 +139,21 @@ graph TB
     A[Web Scraper] --> B[PDF Processor]
     B --> C[Text Embeddings]
     C --> D[Qdrant Vector DB]
-    E[User Query] --> F[Vector Search]
-    D --> F
-    F --> G[Context Retrieval]
-    G --> H[Mistral LLM]
-    H --> I[Chat Response]
+    E[User Query] --> F[Query Embedding]
+    F --> G[Vector Search]
+    D --> G
+    G --> H[Context Retrieval]
+    H --> I[Prompt Building]
+    I --> J[Mistral LLM]
+    J --> K[Chat Response]
 ```
 
 ## 📚 Key Components
 
 ### PDF Processing Pipeline
-- **Scraper**: Selenium-based web scraping with metadata extraction
-- **Parser**: Multi-modal PDF processing (text + OCR) with page classification
-- **Embeddings**: Semantic text chunking and vector generation
+- **Scraper**: Selenium-based web scraping with metadata extraction. This was particularly tricky because I had to mimic the browsing as a client more such that instead of opening the link I download from the link and assign a clean name to help with the emedding, in an annotation style of working.
+- **Parser**: Multi-modal PDF processing (text + OCR) with page classification. Currently, easyOCR is not working and crashes my laptop, also tries Docling but even heavier. I use only fitz (mupdf) to identify what pages are what type, then i extract accorsingly. Progress detailed in the notebook.
+- **Embeddings**: Semantic text chunking and vector generation. Other chunking techniques need to be used, specifically chunking by string length, or semantically using langraph. It is mainly due to the time constraint that I couldn't experiment as much.
 
 ### RAG System
 - **Retrieval**: Semantic search using cosine similarity
@@ -149,9 +161,8 @@ graph TB
 - **Generation**: Streaming responses from Mistral with financial context
 
 ### Chat Interface
-- **Chainlit**: Modern web-based chat UI
-- **Streaming**: Real-time token-by-token response generation
-- **Bilingual**: English/Arabic support with proper Unicode handling
+- **Chainlit**: Modern web-based chat UI with streaming responses
+- **Real-time Processing**: Token-by-token response generation for better user experience
 
 ## 🧪 Development
 
@@ -162,7 +173,7 @@ graph TB
 jupyter notebook bot.ipynb
 
 # Test chat interface
-chainlit run cibbot.py --port 8001
+chainlit run cibbot.py
 ```
 
 ### Adding New Features
@@ -171,38 +182,4 @@ chainlit run cibbot.py --port 8001
 2. **Enhanced Processing**: Modify `parser.py` for new document types
 3. **Custom Models**: Update `embed.py` and `llm.py` for different models
 
-## 📝 API Reference
 
-### Key Functions
-
-- `process_pdf_document()`: Extract structured text from PDF
-- `get_embeddings()`: Generate semantic embeddings
-- `search_qdrant()`: Perform vector similarity search
-- `build_contextual_prompt()`: Create RAG prompts with context
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## ⚠️ Disclaimer
-
-This tool is for educational and research purposes. Financial data should be verified against official CIB publications. The accuracy of AI-generated responses is not guaranteed.
-
-## 🆘 Support
-
-For issues and questions:
-- Open an issue on GitHub
-- Check the notebook examples in `bot.ipynb`
-- Review the Docker logs for debugging
-
----
-
-Made with ❤️ for financial data analysis and AI education.
