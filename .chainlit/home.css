@@ -1,0 +1,24 @@
+body {
+  background: #f7f9fa;
+  font-family: 'Inter', sans-serif;
+}
+
+.cl-message {
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  margin-bottom: 12px;
+}
+
+.cl-message.user {
+  background: #e3f2fd;
+}
+
+.cl-message.assistant {
+  background: #f1f8e9;
+}
+
+.cl-header {
+  background: #003366;
+  color: #fff;
+}
